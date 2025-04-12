@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Письмо для Маши</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(120deg, #fff0f5, #ffe4e1);
+      font-family: 'Great Vibes', cursive;
+      color: #b30059;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .music-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      font-size: 1.2em;
+      background: #fff0f5;
+      border: 2px solid #ffb6c1;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .heart {
+      font-size: 3em;
+      animation: beat 1.5s infinite;
+      margin-top: 40px;
+    }
+
+    .typing {
+      font-size: 2em;
+      margin-top: 30px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: .15em solid #b30059;
+      animation:
+        typing 3.5s steps(40, end) forwards,
+        blink-caret 0.75s step-end infinite;
+      max-width: 100%;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #b30059 }
+    }
+
+    @keyframes hide-caret {
+      to { border-color: transparent }
+    }
+
+    p {
+      font-size: 1.3em;
+      max-width: 90%;
+      margin: 25px auto;
+      line-height: 1.6;
+      animation: fadeIn 2s ease-out;
+    }
+
+    .photo {
+      width: 85%;
+      max-width: 320px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      margin: 30px 0;
+      animation: fadeIn 2s ease-out;
+    }
+
+    button {
+      background-color: #ff85a2;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1.1em;
+      font-family: 'Pacifico', cursive;
+      color: white;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      margin: 25px auto;
+    }
+
+    button:hover {
+      background-color: #e05780;
+    }
+
+    #hidden-text {
+      display: none;
+      font-size: 1.3em;
+      margin-top: 25px;
+      max-width: 85%;
+      animation: fadeIn 1.5s ease-out;
+    }
+
+    .footer {
+      font-size: 1.2em;
+      margin: 40px auto 20px;
+      animation: fadeIn 2s ease-out;
+    }
+
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .petal {
+      position: fixed;
+      width: 24px;
+      height: 24px;
+      background: url('https://pngimg.com/d/rose_PNG66691.png') no-repeat center;
+      background-size: cover;
+      animation: fall linear infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .typing { font-size: 2.8em; }
+      p, #hidden-text { font-size: 1.5em; }
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="bg-music" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
+  </audio>
+
+  <div class="music-toggle" onclick="toggleMusic()">🎵</div>
+
+  <div class="heart">💖</div>
+
+  <div class="typing" id="typingText">Привет, моя любимая Маша...</div>
+
+  <p>
+    Ты — моё вдохновение, моя нежность, моя любовь. <br>
+    Я люблю в тебе всё: твои глаза, голос, смех и даже молчание. <br>
+    С тобой связано всё тёплое в моей жизни.
+  </p>
+
+  <img src="маша.jpg" alt="Моя Маша" class="photo" />
+
+  <button onclick="showMessage()">Письмо от сердца 💌</button>
+
+  <div id="hidden-text">
+    Маша, спасибо, что ты есть. Ты делаешь каждый день особенным. <br>
+    Я всегда рядом. Навсегда твой. 💞
+  </div>
+
+  <p class="footer">С любовью, твой Игорь 💗</p>
+
+  <script>
+    const music = document.getElementById('bg-music');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        music.play().catch(() => {});
+      }, 1000);
+    });
+
+    function toggleMusic() {
+      music.paused ? music.play() : music.pause();
+    }
+
+    function showMessage() {
+      document.getElementById("hidden-text").style.display = "block";
+    }
+
+    function createPetal() {
+      const petal = document.createElement('div');
+      petal.classList.add('petal');
+      petal.style.left = Math.random() * 100 + 'vw';
+      petal.style.animationDuration = (5 + Math.random() * 5) + 's';
+      document.body.appendChild(petal);
+      setTimeout(() => petal.remove(), 10000);
+    }
+
+    setInterval(createPetal, 800);
+
+    // Когда анимация текста завершена, убираем мигающую полоску
+    document.getElementById('typingText').addEventListener('animationend', () => {
+      document.querySelector('.typing').style.borderRight = 'none';
+    });
+  </script>
+
+</body>
+</html>
